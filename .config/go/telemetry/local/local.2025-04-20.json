@@ -1,0 +1,113 @@
+{
+ "Week": "2025-04-20",
+ "LastWeek": "",
+ "X": 0.663172325243375,
+ "Programs": [
+  {
+   "Program": "cmd/asm",
+   "Version": "go1.24.0",
+   "GoVersion": "go1.24.0",
+   "GOOS": "linux",
+   "GOARCH": "amd64",
+   "Counters": {
+    "asm/flag:D": 83,
+    "asm/flag:I": 83,
+    "asm/flag:gensymabis": 31,
+    "asm/flag:o": 83,
+    "asm/flag:p": 83,
+    "asm/flag:trimpath": 83,
+    "asm/invocations": 83
+   },
+   "Stacks": {}
+  },
+  {
+   "Program": "cmd/cgo",
+   "Version": "go1.24.0",
+   "GoVersion": "go1.24.0",
+   "GOOS": "linux",
+   "GOARCH": "amd64",
+   "Counters": {
+    "cgo/flag:dynimport": 2,
+    "cgo/flag:dynlinker": 1,
+    "cgo/flag:dynout": 2,
+    "cgo/flag:dynpackage": 2,
+    "cgo/flag:import_runtime_cgo": 1,
+    "cgo/flag:import_syscall": 1,
+    "cgo/flag:importpath": 2,
+    "cgo/flag:ldflags": 2,
+    "cgo/flag:objdir": 2,
+    "cgo/invocations": 4
+   },
+   "Stacks": {}
+  },
+  {
+   "Program": "cmd/compile",
+   "Version": "go1.24.0",
+   "GoVersion": "go1.24.0",
+   "GOOS": "linux",
+   "GOARCH": "amd64",
+   "Counters": {
+    "compile/flag:asmhdr": 31,
+    "compile/flag:buildid": 175,
+    "compile/flag:c": 175,
+    "compile/flag:complete": 138,
+    "compile/flag:goversion": 175,
+    "compile/flag:importcfg": 175,
+    "compile/flag:lang": 175,
+    "compile/flag:nolocalimports": 175,
+    "compile/flag:o": 175,
+    "compile/flag:p": 175,
+    "compile/flag:pack": 175,
+    "compile/flag:std": 169,
+    "compile/flag:symabis": 31,
+    "compile/flag:trimpath": 175,
+    "compile/invocations": 309
+   },
+   "Stacks": {}
+  },
+  {
+   "Program": "cmd/go",
+   "Version": "go1.24.0",
+   "GoVersion": "go1.24.0",
+   "GOOS": "linux",
+   "GOARCH": "amd64",
+   "Counters": {
+    "go/build/flag:o": 8,
+    "go/buildcache/hit": 615,
+    "go/buildcache/miss": 177,
+    "go/buildcache/stdlib-recompiled": 2,
+    "go/goroot:other": 16,
+    "go/invocations": 18,
+    "go/mode:module": 14,
+    "go/platform/host/linux/major-version:5": 14,
+    "go/platform/host/linux/version:5-15": 14,
+    "go/platform/target/goamd64:v1": 14,
+    "go/platform/target/goarch:amd64": 14,
+    "go/platform/target/goos:linux": 14,
+    "go/subcommand:build": 12,
+    "go/subcommand:help": 1,
+    "go/subcommand:run": 1,
+    "go/subcommand:unknown": 2,
+    "go/subcommand:version": 1
+   },
+   "Stacks": {}
+  },
+  {
+   "Program": "cmd/link",
+   "Version": "go1.24.0",
+   "GoVersion": "go1.24.0",
+   "GOOS": "linux",
+   "GOARCH": "amd64",
+   "Counters": {
+    "link/flag:buildid": 2,
+    "link/flag:buildmode": 2,
+    "link/flag:extld": 2,
+    "link/flag:importcfg": 2,
+    "link/flag:o": 2,
+    "link/invocations": 4
+   },
+   "Stacks": {}
+  }
+ ],
+ "Config": "v0.0.0-0"
+}
