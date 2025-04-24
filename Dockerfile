@@ -10,11 +10,11 @@ WORKDIR /app
 
 
 #Копируем Go-файл в контейнер
-COPY hello_world.go .
+COPY hello.go .
 
 
 #Собираем приложение Go
-RUN go build -o hello hello_world.go
+RUN go build -o hello hello.go
 
 
 #Указываем порт, который будет использоваться 
