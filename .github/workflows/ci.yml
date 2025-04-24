@@ -1,0 +1,46 @@
+
+
+name: Build and Push Docker image 
+
+
+on:
+  push:
+    branches:
+      -main
+
+
+
+jobs: 
+  build: 
+    runs-on: ubuntu-latest 
+
+    #Checkout code: Извлекает код из репозиторий 
+    step:
+      - name: Chekout code
+        user: action/checkout@v2
+
+    #Cache Docker Layers кэширует слои Docker, чтобы ускорить сборку
+      - name: Cache Docker layers
+        uses: action/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      #Log in to Docker Hub - выполняет авторизацию на Docker-Hub с использованием секретов, которые ты настраиваешь в GitHub
+      - name: Log in to Docker Hub
+        user: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      #собирает и пушит Docker-образ на DockerHub
+      - name: Build and push Docker image 
+      - uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: yourusername/your-repo-name:latest 
+
+
