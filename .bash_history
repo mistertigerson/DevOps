@@ -447,3 +447,37 @@ cd /home/kolya/ansible/task8/
 ansible-playbook -i hosts.ini setup-service.yml
 sudo service ssh start
 sudo service ssh status
+exit
+sudo /usr/sbin/sshd
+ss -tuln | grep :22
+ansible-playbook -i hosts.ini setup-service.yml
+cd /home/kolya/ansible/task8/
+ansible-playbook -i hosts.ini setup-service.yml
+ls /etc/systemd/system/
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+systemctl status hello.service
+ansible-playbook -i hosts.ini setup-service.yml
+systemctl status hello.service
+ls -l /etc/systemd/system/
+sudo mv /etc/systemd/system/hello-world.service /etc/systemd/system/hello.service
+sudo systemctl daemon-reload
+sudo systemctl enable hello.service
+sudo nano /etc/systemd/system/hello.service
+ls -l /usr/local/bin/hello
+sudo nano /etc/systemd/system/hello.service
+sudo rm /etc/systemd/system/hello.service
+sudo nano /etc/systemd/system/hello.service
+sudo systemctl daemon-reload
+sudo systemctl enable hello.service
+sudo systemctl start hello.service
+sudo systemctl status hello.service
+ansible-playbook -i hosts.ini setup-service.yml
+cd ..
+git init
+git add .
+cd /home/kolya/
+ls
+git add.
+git add .
+sudo su
