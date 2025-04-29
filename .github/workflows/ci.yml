@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      -main
+      - main
 
 jobs:
   build:
@@ -17,17 +17,17 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
-        user: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v1
 
       - name: Cache Docker layers
-        user: actions/cashe@v2
+        uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Build Docker image 
+      - name: Build Docker image
         run: |
           docker build -t localhost/hello-go .
 
@@ -37,14 +37,14 @@ jobs:
           playbook: ansible/playbooks/setup-services.yml
           inventory: ansible/host.ini
           extra-vars: |
-            ansible_ssh_private_key_file=${{ secrets.SSH_PRIVSTE_KEY }}
+            ansible_ssh_private_key_file=${{ secrets.SSH_PRIVATE_KEY }}
             ansible_ssh_user=kolya
             remote_host=172.31.1.42
 
       - name: Deploy Docker container on remote server
         run: |
           ssh -i ${{ secrets.SSH_PRIVATE_KEY }} kolya@172.31.1.42 << 'EOF'
-            docker pull localhost/hello-go
-            docker rm -f hello-go || true
-            docker run -d --name hello-go -p 8080:8080 localhost/hello-go
-          EOF
+          docker rm -f hello-go || true
+          docker run --pull=never -d --name hello-go -p 8080:8080 localhost/hello-go
+EOF
+
