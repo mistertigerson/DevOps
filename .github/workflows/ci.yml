@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -43,9 +43,8 @@ jobs:
 
       - name: Deploy Docker container on remote server
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} kolya@172.31.1.42 "
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} kolya@172.31.1.42 << 'EOF'
             docker rm -f hello-go || true
             docker run --pull=never -d --name hello-go -p 8080:8080 localhost/hello-go
-          "
-
+          EOF
 
