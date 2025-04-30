@@ -1,0 +1,50 @@
+name: CI/CD Pipeline for Go App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build Docker image
+        run: |
+          docker build -t localhost/hello-go .
+
+      - name: Run Ansible playbook
+        uses: ansible/ansible-playbook-action@v2
+        with:
+          playbook: ansible/playbooks/setup-services.yml
+          inventory: ansible/host.ini
+          extra-vars: |
+            ansible_ssh_private_key_file=${{ secrets.SSH_PRIVATE_KEY }}
+            ansible_ssh_user=kolya
+            remote_host=172.31.1.42
+
+      - name: Deploy Docker container on remote server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} kolya@172.31.1.42 << 'EOF'
+            docker rm -f hello-go || true
+            docker run --pull=never -d --name hello-go -p 8080:8080 localhost/hello-go
+          EOF
+
