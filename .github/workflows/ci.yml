@@ -1,4 +1,4 @@
-name: Build and Deploy Go App
+name: CI/CD Pipeline for Go App
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-   build-and-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Cache Docker layers
-        uses: actions/cache@v4
+        uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -28,20 +28,34 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Build Docker image
-        run: docker build -t localhost/hello-go .
+        run: |
+          docker build -t localhost/hello-go .
 
-      - name: Setup SSH key
+      - name: Setup SSH
         run: |
-              mkdir -p $HOME/.ssh
-              touch $HOME/.ssh/known_hosts
-              chmod 700 $HOME/.ssh
-              chmod 600 $HOME/.ssh/known_hosts
-              echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa
-              chmod 600 $HOME/.ssh/id_rsa
-              ssh-keyscan -H 172.31.1.42 >> $HOME/.ssh/known_hosts  # Добавляем хост в known_hosts
-     
-     - name: Run remote deployment script
+          mkdir -p $HOME/.ssh
+          touch $HOME/.ssh/known_hosts
+          chmod 700 $HOME/.ssh
+          chmod 600 $HOME/.ssh/known_hosts
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa
+          ssh-keyscan -H 172.31.1.42 >> $HOME/.ssh/known_hosts  # Add host to known_hosts
+
+      - name: Run Ansible playbook
+        uses: ansible/ansible-playbook-action@v2
+        with:
+          playbook: ansible/playbooks/setup-services.yml
+          inventory: ansible/host.ini
+          extra-vars: |
+            ansible_ssh_private_key_file=${{ secrets.SSH_PRIVATE_KEY }}
+            ansible_ssh_user=kolya
+            remote_host=172.31.1.42
+
+      - name: Deploy Docker container on remote server
         run: |
-          chmod +x ./deploy_docker_app.sh
-          ./deploy_docker_app.sh
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} kolya@172.31.1.42 << 'EOF'
+            docker pull localhost/hello-go
+            docker rm -f hello-go || true
+            docker run --pull=never -d --name hello-go -p 8080:8080 localhost/hello-go
+          EOF
 
