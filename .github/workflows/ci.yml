@@ -32,7 +32,7 @@ jobs:
 
       - name: Setup SSH key
         run: |
-          mkdir -p ~/.ssh
+          mkdir -p /home/runner/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 172.31.1.42 >> ~/.ssh/known_hosts
