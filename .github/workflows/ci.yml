@@ -33,6 +33,9 @@ jobs:
       - name: Setup SSH key
         run: |
           sudo mkdir -p /home/runner/.ssh
+          sudo touch /home/runner/.ssh/known_hosts
+          sudo chmod 700 /home/runner/.ssh
+          sudo chmod 600 /home/runner/.ssh/known_hosts
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | sudo tee /home/runner/.ssh/id_rsa > /dev/null
           sudo chmod 600 /home/runner/.ssh/id_rsa
           ssh-keyscan -H 172.31.1.42 >> $HOME/.ssh/known_hosts
