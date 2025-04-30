@@ -1,20 +1,44 @@
-#!/bin/bash
+name: Build and Deploy Go App
 
-# Конфигурация
-REMOTE_USER="kolya"
-REMOTE_HOST="172.31.1.42"
-SSH_KEY="$HOME/.ssh/id_rsa"
-IMAGE_NAME="localhost/hello-go"
-CONTAINER_NAME="hello-go"
-PORT="8080"
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-# Команда для удаленного запуска
-read -r -d '' REMOTE_COMMAND << EOM
-podman pull $IMAGE_NAME || echo "Локальный образ будет использоваться"
-podman rm -f $CONTAINER_NAME 2>/dev/null || true
-podman run --pull=never -d --name $CONTAINER_NAME -p $PORT:8080 $IMAGE_NAME
-EOM
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-# Подключение и выполнение
-ssh -i "$SSH_KEY" $REMOTE_USER@$REMOTE_HOST "$REMOTE_COMMAND"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build Docker image
+        run: docker build -t localhost/hello-go .
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 172.31.1.42 >> ~/.ssh/known_hosts
+
+      - name: Run remote deployment script
+        run: |
+          chmod +x ./deploy_docker_app.sh
+          ./deploy_docker_app.sh
 
