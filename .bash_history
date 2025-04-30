@@ -481,3 +481,61 @@ ls
 git add.
 git add .
 sudo su
+cd ..
+ls
+cd ..
+ls
+cd ..
+cd /home
+cd /kolya
+cd kolya
+ды
+ls
+touch deploy_docker_app.sh
+ls
+nano deploy_docker_app.sh 
+docker images
+nano deploy_docker_app.sh 
+chmod +x deploy_docker_app.sh 
+./deploy_docker_app.sh 
+nano deploy_docker_app.sh 
+chmod +x deploy_docker_app.sh 
+./deploy_docker_app.sh 
+cd /docker.io
+ls
+nano deploy_docker_app.sh 
+./deploy_docker_app.sh 
+nano deploy_docker_app.sh 
+./deploy_docker_app.sh 
+nano deploy_docker_app.sh 
+./deploy_docker_app.sh 
+nano deploy_docker_app.sh 
+./deploy_docker_app.sh 
+ls
+sudo lsof -i :8080
+sudo apt install lsof
+sudo lsof -i :8080
+sudo kill <157>
+sudo kill 157
+./deploy_docker_app.sh 
+docker ps
+curl http://localhost:8080
+git add .
+git -m commit "task9"
+git -o commit "task9"
+git -i commit "task9"
+git -c commit "task9"
+git -m commit "task9"
+git commit -m "task9"
+git init
+git add .
+ls
+cd ..
+ls
+cd ..
+ls
+cd /kolta
+cd /kolya
+cd /home
+git init
+sudo su
