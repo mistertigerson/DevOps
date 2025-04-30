@@ -32,15 +32,15 @@ jobs:
 
       - name: Setup SSH key
         run: |
-          sudo mkdir -p /home/runner/.ssh
-          sudo touch /home/runner/.ssh/known_hosts
-          sudo chmod 700 /home/runner/.ssh
-          sudo chmod 600 /home/runner/.ssh/known_hosts
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | sudo tee /home/runner/.ssh/id_rsa > /dev/null
-          sudo chmod 600 /home/runner/.ssh/id_rsa
-          ssh-keyscan -H 172.31.1.42 >> $HOME/.ssh/known_hosts
-
-      - name: Run remote deployment script
+              mkdir -p $HOME/.ssh
+              touch $HOME/.ssh/known_hosts
+              chmod 700 $HOME/.ssh
+              chmod 600 $HOME/.ssh/known_hosts
+              echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa
+              chmod 600 $HOME/.ssh/id_rsa
+              ssh-keyscan -H 172.31.1.42 >> $HOME/.ssh/known_hosts  # Добавляем хост в known_hosts
+     
+     - name: Run remote deployment script
         run: |
           chmod +x ./deploy_docker_app.sh
           ./deploy_docker_app.sh
