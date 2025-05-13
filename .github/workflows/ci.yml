@@ -37,12 +37,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ansible
 
-      - name: Set up SSH for Ansible
+      - name: Setup SSH for Ansible
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa                       # Protect private key:contentReference[oaicite:5]{index=5}
-          ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts:contentReference[oaicite:6]{index=6}
+          ssh-keyscan -H 172.31.1.42 >> ~/.ssh/known_hosts
 
       - name: Run Ansible playbook (deploy systemd service)
         env:
