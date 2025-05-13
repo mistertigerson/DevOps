@@ -49,7 +49,7 @@ jobs:
 
       - name: Setup SSH access
         run: |
-          mkdir -p ~/.ssh
+          sudo mkdir -p ~/.ssh || true
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
