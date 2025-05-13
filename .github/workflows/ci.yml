@@ -9,6 +9,7 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,7 +42,11 @@ jobs:
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/hello-go:latest
 
-      # Ensure you manually add SSH_PRIVATE_KEY, REMOTE_USER, REMOTE_HOST secrets in repo settings
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+
       - name: Setup SSH access
         run: |
           mkdir -p ~/.ssh
