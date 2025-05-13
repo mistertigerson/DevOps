@@ -49,8 +49,7 @@ jobs:
 
       - name: Setup SSH access
         run: |
-          rm -rf ~/.ssh
-          mkdir -p ~/.ssh
+          mkdir -p /home/runner/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
