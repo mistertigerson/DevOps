@@ -1,0 +1,27 @@
+---
+- name: Setup Go app as systemd service
+  hosts: myserver
+  become: true
+
+  tasks:
+    - name: Copy binary to remote
+      copy:
+        src: /home/kolya/hello
+        dest: /home/kolya/hello
+        mode: '0755'
+
+    - name: Copy systemd service file
+      copy:
+        src: /home/kolya/hello.service
+        dest: /etc/systemd/system/hello.service
+        mode: '0644'
+
+    - name: Reload systemd
+      command: systemctl daemon-reexec
+
+    - name: Enable and restart service
+      systemd:
+        name: hello.service
+        enabled: true
+        state: restarted
+

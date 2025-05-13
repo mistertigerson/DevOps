@@ -1,0 +1,11 @@
+[Unit]
+Description=Hello Go App
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/hello
+Restart=on-failure
+User=kolya
+
+[Install]
+WantedBy=multi-user.target
