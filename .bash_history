@@ -539,3 +539,35 @@ cd /kolya
 cd /home
 git init
 sudo su
+ls
+./deploy_docker_app.sh 
+sudo lsof -i :8080
+sudo kill 159
+./deploy_docker_app.sh 
+podman ps
+curl http://localhost:8080
+cat deploy_docker_app.sh 
+nano ci.yml
+ls
+rm -rf ci.yml 
+ls
+mv deploy_docker_app.sh deploy_docker_app.yml
+ls
+git add .
+sudo su
+ls
+cp deploy_docker_app.yml deploy_docker_app.yml.bak
+ls
+nano deploy_docker_app.yml
+sudo su
+find deploy
+sudo -su
+sudo su
+scp "C:\Users\User\Downloads\deploy_docker_app.sh" kolya@172.31.1.42:/home/kolya/
+systemctl status ssh
+scp "C:\Users\User\Downloads\deploy_docker_app.sh" kolya@172.31.1.42:/home/kolya/
+sudo systemctl start ssh
+exit
+poweroff
+power off
+reboot
