@@ -1,7 +1,9 @@
-name: CI
+name: CI Pipeline with Ansible & Docker
+
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -14,48 +16,43 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.22.x"           # Specify Go version (example)
+          go-version: '1.22'
 
       - name: Cache Go modules
         uses: actions/cache@v4
         with:
           path: |
-            ~/.cache/go-build           # Go build cache
-            ~/go/pkg/mod               # Go modules cache
-          key: ${{ runner.os }}-go-mod-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-mod-
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
 
-      - name: Build Go application
-        run: go build -v -o myapp .
+      - name: Build Go app
+        run: go build -v -o hello .
 
       - name: Build Docker image
-        run: docker build -t myapp:latest .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/hello-go:latest .
 
-      - name: Install Ansible
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ansible
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Setup SSH for Ansible
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/hello-go:latest
+
+      # Ensure you manually add SSH_PRIVATE_KEY, REMOTE_USER, REMOTE_HOST secrets in repo settings
+      - name: Setup SSH access
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa                       # Protect private key:contentReference[oaicite:5]{index=5}
-          ssh-keyscan -H 172.31.1.42 >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Run Ansible playbook (deploy systemd service)
+      - name: Run Ansible playbook
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
-        run: ansible-playbook -i ./ansible/inventory.ini deploy.yml -u ${{ secrets.REMOTE_USER }} --private-key ~/.ssh/id_rsa:contentReference[oaicite:7]{index=7}
-
-      - name: Save Docker image and copy to remote
         run: |
-          docker save -o myapp.tar myapp:latest
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa myapp.tar ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/tmp/myapp.tar
-
-      - name: Load image and run container on remote
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} \
-            "docker load -i /tmp/myapp.tar && docker run -d --name myapp_container -p 8081:80 myapp:latest"
+          ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
+            -u ${{ secrets.REMOTE_USER }} --private-key ~/.ssh/id_rsa
 
