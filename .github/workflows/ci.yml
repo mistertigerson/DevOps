@@ -53,6 +53,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p ${{ secrets.REMOTE_PORT }} -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
 
       - name: Run Ansible playbook
         env:
@@ -60,4 +61,4 @@ jobs:
         run: |
           ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
             -u ${{ secrets.REMOTE_USER }} --private-key ~/.ssh/id_rsa \
-            -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+            -e "ansible_port=${{ secrets.REMOTE_PORT }}"
