@@ -12,7 +12,7 @@
 
     - name: Copy systemd service file
       copy:
-        src: /home/kolya/hello.service
+        src: ../hello.service
         dest: /etc/systemd/system/hello.service
         mode: '0644'
 
