@@ -571,3 +571,49 @@ exit
 poweroff
 power off
 reboot
+sudo -su
+sudo su
+ls
+cd .github
+ls
+cd workflows/
+nano ci.yml
+sudo nano ci.yml
+git add .
+git commit -m "vladislav"
+git push origin main
+sudo su
+ls
+ansible-playbook -i ~/ansible/inventory.ini ~/ansible/playbook.yml
+ls ~/hello.service
+locate hello.service
+cd /etc/systemd/system/hello.service 
+cd /etc/systemd/system/
+ls
+cat hello.service
+cp /etc/systemd/system/hello.service ~/hello.service
+ls
+cd ..
+ls
+cd home
+ls
+cd kolya
+ls
+cat hello.service 
+ansible-playbook -i ~/ansible/inventory.ini ~/ansible/playbook.yml 
+sudo systemctl status hello.service
+curl http://localhost:8080
+sudo git add .
+sudo git commit -m "task10"
+git push origin main
+sudo su
+ls
+chmod +x deploy_docker_app.sh 
+./deploy_docker_app.sh 
+sudo lsof -i :8080
+kill 188
+sudo lsof -i :8080
+./deploy_docker_app.sh 
+curl http://localhost:8080
+sudo su
+exit
