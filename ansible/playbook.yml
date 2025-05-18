@@ -6,7 +6,7 @@
   tasks:
     - name: Copy binary to remote
       copy:
-        src: /home/kolya/hello
+        src: ../hello
         dest: /home/kolya/hello
         mode: '0755'
 
