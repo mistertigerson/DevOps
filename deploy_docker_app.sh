@@ -16,4 +16,4 @@ docker run --pull=never -d --name $CONTAINER_NAME -p $PORT:8080 $IMAGE_NAME
 EOM
 
 # Подключение и выполнение
-ssh -i "$SSH_KEY" -p "REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "$REMOTE_COMMAND"
+ssh -i "$SSH_KEY" -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "$REMOTE_COMMAND"
