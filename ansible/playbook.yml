@@ -7,7 +7,7 @@
     - name: Copy binary to remote
       copy:
         src: ../hello
-        dest: /home/kolya/hello
+        dest: "/home/{{ ansible_user }}/hello"
         mode: '0755'
 
     - name: Copy systemd service file

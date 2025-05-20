@@ -617,3 +617,60 @@ sudo lsof -i :8080
 curl http://localhost:8080
 sudo su
 exit
+ls
+cd /home
+ls
+cd kolya
+ls
+sudo su
+ssh-keygen -t rsa -b 4096 -C "your@email.com"
+ssh-keygen -t rsa -b 4096 -C "kg.ukr1996@gmail.com"
+cd .ssh
+ls
+cat id_rsa
+nano id_rsa
+ls
+nano authorized_keys 
+ls
+cat id_rsa.pub 
+nano authorized_keys 
+cd ..
+ls
+cd ansible/
+ls
+cat playbook.yml 
+cd ..
+cd /home/kolya/
+ls
+cd ansible/
+ls
+cd ..
+cd .github
+ls
+cd workflows/
+nano ci.yml
+cd ..
+ls
+cd .github
+cd workflows/
+nano ci.yml
+cd ..
+ls
+cd ansible
+ls
+nano playbook.yml 
+sudo nano playbook.yml 
+git add .
+sudo su
+ls
+nano deploy_docker_app.sh 
+cd a
+cd ansible/
+ls
+cd ..
+sudo su
+cd .ssh
+cd /.ssh
+cd ~/.ssh/id_rsa
+~/.ssh/id_rsa
+sudo su

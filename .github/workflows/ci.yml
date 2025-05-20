@@ -54,10 +54,16 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
+      -name: Deploy Docker app over SSH
+       run: |
+         export REMOTE_USER=${{ secrets.REMOTE_USER }}
+         export REMOTE_HOST=${{ secrets.REMOTE_HOST }}
+         export REMOTE_PORT=${{ secrets.REMOTE_PORT }}
+         bash ./deploy_docker_app.sh
+
       - name: Run Ansible playbook
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
         run: |
           ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
-            -u ${{ secrets.REMOTE_USER }} --private-key ~/.ssh/id_rsa \
-            -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+            --extra-vars "ansible_port=${{ secret.REMOTE_PORT }} ansible_user=${{ secrets.REMOTE_USER }}"

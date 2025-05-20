@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Конфигурация
-REMOTE_USER="kolya"
-REMOTE_HOST="172.31.1.42"
+REMOTE_USER=${REMOTE_USER}
+REMOTE_HOST=${REMOTE_HOST}
+REMOTE_PORT=${REMOTE_PORT}
 SSH_KEY="$HOME/.ssh/id_rsa"
 IMAGE_NAME="hello-go"
 CONTAINER_NAME="hello-go"
@@ -15,4 +16,4 @@ docker run --pull=never -d --name $CONTAINER_NAME -p $PORT:8080 $IMAGE_NAME
 EOM
 
 # Подключение и выполнение
-ssh -i "$SSH_KEY" "$REMOTE_USER@$REMOTE_HOST" "$REMOTE_COMMAND"
+ssh -i "$SSH_KEY" -p "REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "$REMOTE_COMMAND"

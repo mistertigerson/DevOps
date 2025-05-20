@@ -1,50 +1,63 @@
-name: CI/CD Pipeline for Go App
+name: CI Pipeline with Ansible & Docker
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Cache Docker layers
-        uses: actions/cache@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+          go-version: '1.22'
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+
+      - name: Build Go app
+        run: go build -v -o hello .
 
       - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/hello-go:latest .
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/hello-go:latest
+
+      - name: Install Ansible
         run: |
-          docker build -t localhost/hello-go .
+          sudo apt update
+          sudo apt install -y ansible
+
+      - name: Setup SSH access
+        run: |
+          set -x
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
       - name: Run Ansible playbook
-        uses: ansible/ansible-playbook-action@v2
-        with:
-          playbook: ansible/playbooks/setup-services.yml
-          inventory: ansible/host.ini
-          extra-vars: |
-            ansible_ssh_private_key_file=${{ secrets.SSH_PRIVATE_KEY }}
-            ansible_ssh_user=kolya
-            remote_host=172.31.1.42
-
-      - name: Deploy Docker container on remote server
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "False"
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} kolya@172.31.1.42 << 'EOF'
-            docker rm -f hello-go || true
-            docker run --pull=never -d --name hello-go -p 8080:8080 localhost/hello-go
-          EOF
-
+          ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
+            -u ${{ secrets.REMOTE_USER }} --private-key ~/.ssh/id_rsa \
+            -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
