@@ -674,3 +674,4 @@ cd /.ssh
 cd ~/.ssh/id_rsa
 ~/.ssh/id_rsa
 sudo su
+exit
