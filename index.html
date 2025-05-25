@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Say Hello!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin: 1rem 0 0.5rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #response {
+      margin-top: 1rem;
+      background: #f0f0f0;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Greet Me!</h1>
+
+  <label for="endpoint">API Endpoint:</label>
+  <input type="text" id="endpoint" placeholder="http://localhost:8080/api/hello">
+
+  <label for="name">Your Name:</label>
+  <input type="text" id="name" placeholder="Andrey">
+
+  <button onclick="sendRequest()">Submit</button>
+
+  <div id="response"><strong>Server response:</strong> <span id="output">—</span></div>
+
+  <script>
+    async function sendRequest() {
+      const endpoint = document.getElementById('endpoint').value.trim();
+      const name = document.getElementById('name').value.trim();
+      const output = document.getElementById('output');
+
+      if (!endpoint || !name) {
+        output.textContent = 'Please fill in both fields.';
+        return;
+      }
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name })
+        });
+
+        const data = await response.json();
+        output.textContent = data['system-response'] || 'Unexpected response';
+      } catch (error) {
+        output.textContent = 'Error: ' + error.message;
+      }
+    }
+  </script>
+</body>
+</html>
+

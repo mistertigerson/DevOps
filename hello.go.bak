@@ -7,11 +7,11 @@ import (
     "net/http"
 )
 
-type Request struct {
+type RequestData struct {
     Name string `json:"name"`
 }
 
-type Response struct {
+type ResponseData struct {
     SystemResponse string `json:"system-response"`
 }
 
@@ -21,32 +21,21 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    var req Request
-    if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+    var req RequestData
+    err := json.NewDecoder(r.Body).Decode(&req)
+    if err != nil {
         http.Error(w, "Bad request", http.StatusBadRequest)
         return
     }
 
-    resp := Response{
-        SystemResponse: fmt.Sprintf("Hello, %s!", req.Name),
-    }
-
+    res := ResponseData{SystemResponse: "Hello, " + req.Name + "!"}
     w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(resp)
-}
-
-func htmlHandler(w http.ResponseWriter, r *http.Request) {
-    http.ServeFile(w, r, "index.html")
+    json.NewEncoder(w).Encode(res)
 }
 
 func main() {
-    http.HandleFunc("/", htmlHandler)
     http.HandleFunc("/api/hello", helloHandler)
-
-    port := ":8080"
-    fmt.Println("Server running at http://localhost" + port)
-    if err := http.ListenAndServe(port, nil); err != nil {
-        log.Fatal(err)
-    }
+    fmt.Println("Server is running on http://localhost:8080")
+    log.Fatal(http.ListenAndServe(":8080", nil))
 }
 

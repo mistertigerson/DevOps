@@ -675,3 +675,16 @@ cd ~/.ssh/id_rsa
 ~/.ssh/id_rsa
 sudo su
 exit
+ls
+nano hello
+nano hello.go
+find hello.go
+cd ansible/
+find hello.go
+locate hello.go
+cd ..
+nano hello.go
+sudo su
+sudo si
+sudo su
+./hello
