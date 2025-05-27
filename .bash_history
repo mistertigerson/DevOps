@@ -688,3 +688,148 @@ sudo su
 sudo si
 sudo su
 ./hello
+lsof 8080
+lsof 
+lsof sf
+status ./hello
+./hello
+go build -o hello hello.go
+./hello
+ls
+sudo su
+sudo su
+flutter doctor
+tar xf flutter_linux_3.22.1-stable.tar.xz
+cd ~
+curl -O https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.22.1-stable.tar.xz
+tar xf flutter_linux_3.22.1-stable.tar.xz
+export PATH="$PATH:$HOME/flutter/bin"
+source ~/.bashrc  # или source ~/.zshrc
+flutter doctor
+flutter create hello_app
+cd hello_app
+ls
+cd lib/
+ls
+nano main.dart 
+cd ..
+ls
+nano pubspec.yaml
+flutter run
+nano pubspec.
+nano pubspec.yaml 
+flutter run
+sudo apt install cmake
+flutter run
+sudp apt update
+sudo apt update
+sudo apt install ninja-build cmake build-essential clang pkg-config libgtk-3-dev
+flutter doctor
+flutter run
+ls
+cd build
+ls
+cd ..
+cd lib
+ls
+nano main.dart 
+flutter run
+cd ..
+ls
+nano hello.go
+go build -o hello hello.go
+./hello
+lsof -i
+kill 179
+ls
+./hello
+lsof -i
+go build -o hello hello.go
+./hello
+flutter run
+ls
+cd hello_app
+ls
+flutter run
+sudo su
+ls
+flutter run
+sudo flutter run
+sudo apt install git curl unzip xz-utils zip libglu1-mesa -y
+cd ~
+git clone https://github.com/flutter/flutter.git -b stable
+export PATH="$PATH:$HOME/flutter/bin"
+source ~/.bashrc  # или source ~/.zshrc
+flutter doctor
+sudo apt install chromium
+flutter config --chrome-executable=/usr/bin/chromium
+lsof -i
+which chromium
+flutter config --chrome-executable=/usr/bin/chromium
+flutter run -d chrome
+sudo su
+echo 'export PATH="$PATH:$HOME/flutter/bin"' >> ~/.bashrc
+ls ~/flutter/bin/flutter
+reboot
+sudo reboot
+cd ..
+cd ~
+;s
+ls\
+flutter run -d chrome
+ls
+cd hello_app
+ls
+flutter run
+which chromium
+flutter run -d web-server
+sudo su
+ls
+cd hello_app/
+;s
+ls
+flutter run
+sudo su
+ls
+cd hello_app/
+ls
+cd lib
+ls
+flutter run
+flutter doctor
+flutter run -d chrome
+sudo su
+flutter doctor
+flutter run -d web-server
+flutter doctot
+flutter doctor
+lsof -i
+flutter run
+ls
+cd ..
+./hello
+flutter run
+ls
+cd hello_app/
+ls
+flutter run
+ls
+cd lib/
+cp main.dart main.dart.bak
+nano main.dart
+cd ..
+flutter run
+curl -X POST http://localhost:8080/api/hello      -H "Content-Type: application/json"      -d '{"name":"Kolya"}'
+cd ..
+ls
+go build hello hello.go
+go build ./hello hello.go
+go build -o hello hello.go
+./hello
+curl -X POST http://localhost:8080/api/hello      -H "Content-Type: application/json"      -d '{"name":"Kolya"}'
+cat hello.go
+ls
+lsof -i :8080
+kill 147
+go build -o hello hello.go
+./hello

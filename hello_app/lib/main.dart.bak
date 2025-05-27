@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Hello API App',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: HelloApiPage(),
+    );
+  }
+}
+
+class HelloApiPage extends StatefulWidget {
+  @override
+  _HelloApiPageState createState() => _HelloApiPageState();
+}
+
+class _HelloApiPageState extends State<HelloApiPage> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _urlController = TextEditingController();
+  String _response = '';
+
+  Future<void> _sendRequest() async {
+    final name = _nameController.text.trim();
+    final url = _urlController.text.trim();
+
+    if (name.isEmpty || url.isEmpty) return;
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'name': name}),
+    );
+
+    setState(() {
+      _response = response.body;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Hello API App')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _urlController,
+              decoration: InputDecoration(labelText: 'API Endpoint'),
+            ),
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(labelText: 'Your Name'),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _sendRequest,
+              child: Text('Send'),
+            ),
+            SizedBox(height: 24),
+            Text('Server response:'),
+            Text(_response, style: TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

@@ -155,3 +155,4 @@ if ! shopt -oq posix; then
   fi
 fi
 export PODMAN_IGNORE_CGROUPSV1_WARNING=1
+export PATH="$PATH:$HOME/flutter/bin"
